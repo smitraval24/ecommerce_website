@@ -1,31 +1,37 @@
 //jshint esversion:6
-
-//importing libraries 
-import react from "react"
-import ReactDom from "react-dom"
-import inputCreation from "input"
-
 //using modules 
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const _ = require("lodash");
+const Path = require('path');
 var jsdom = require('jsdom');
 $ = require('jquery')(new jsdom.JSDOM().window);
 const mongoose = require('mongoose');
-const { result } = require("lodash");
-mongoose.set('strictQuery',false);
-mongoose.connect("mongodb://127.0.0.1:27017/ecommerce");
 // console.log(mongoose.connection.readyState);
 // 0: disconnected
 // 1: connected
 // 2: connecting
 // 3: disconnecting
+commonPath = "C:/PROGRAMMING/";
+const publicFolderPath = Path.join(commonPath+"/public");
+const viewsFolderPath = Path.join(commonPath+"/src/views");
 
+ 
 let app = express();
-app.use(bodyParser.urlencoded({extended: true}));
-app.set('view engine', 'ejs');
-app.use("/public", express.static(__dirname + "/public"));
+app.set('view engine','ejs');
+app.set('views', viewsFolderPath)
+// console.log(viewsFolderPath,publicFolderPath)
+app.use(bodyParser.urlencoded({extended:true}))
+app.use(express.static(publicFolderPath));
+mongoose.set('strictQuery',false);
+mongoose.connect('mongodb://127.0.0.1:27017/ecommerce')
+.then(()=>{
+    console.log("monogdb connected")
+})
+.catch(()=>{
+    console.log("failed to connect")
+})
 
 app.get("/", (req,res)=>{
     res.render("home")
@@ -36,18 +42,19 @@ app.get("/login", (req,res)=>{
     res.render("login")
 });
 
-app.post("/login",(req,res)=>{
+app.post("/login", async(req,res)=>{
       const userentered_email = req.body.email;
       const userentered_password = req.body.password;
       
-      SignupCred.find({$and:[{email:userentered_email}, {password:userentered_password}] }, (err, results) => {
-          if(results.length>0){
+      await SignupCred.find({$and:[{email:userentered_email}, {password:userentered_password}] })
+      .then((result)=>{
+        if (result.length>0) {
             res.redirect("/")
           }
           else{
             res.redirect("/login")
           }
-        });
+      })
 })
 
 //signup page
@@ -76,7 +83,7 @@ app.get("/signup", (req,res)=>{
     res.render("signup")
   });
   
-app.post("/signup",(req,res)=>{
+app.post("/signup", async(req,res)=>{
       const signup_emial = req.body.email;
       const signup_pass = req.body.password;
       const signup_reenter_pass = req.body.re_entered_password;
@@ -84,31 +91,28 @@ app.post("/signup",(req,res)=>{
   
       const Value = new SignupCred({email:signup_emial, password:signup_pass, repassword:signup_reenter_pass, role:role})
 
-      SignupCred.find({ email:Value.email }, function (err, docs) {
-       
-        if(docs.length>0){
+      await SignupCred.find({ email:Value.email })
+      .then((value)=>{
+        if(value.length>0){
           console.log("user has alreay signup")
           res.redirect("/signup")
         }
-        else if (Value.password != Value.repassword){
+        else if (value.password != value.repassword){
             console.log("both the password are different")
             res.redirect("/signup")
           }
         else{
-          SignupCred.insertMany(Value ,function (err) {
-              if(err){
-                console.log(err);
-              }
-              if (Value.role=="Customer"){
-                res.redirect("/signupCustomer")
-              }
-              else{
-                res.redirect("/signupSeller")
-              }
-          });
+          SignupCred.insertMany(value).then((values)=>{
+            if (values.role=="Customer"){
+              res.redirect("/signupCustomer")
+            }
+            else{
+              res.redirect("/signupSeller")
+            }
+          }, (error)=>{
+            console.log(error)})
           }
-    });
-
+      })
 })
 
 //signup seller page
@@ -142,7 +146,7 @@ app.get("/signupSeller",(req,res)=>{
   res.render("signupSeller")
 })
 
-app.post("/signupSeller",(req,res)=>{
+app.post("/signupSeller", async(req,res)=>{
   const firstname = req.body.fname;
   const lastname = req.body.lname;
   const shopaddress = req.body.saddress;
@@ -151,16 +155,14 @@ app.post("/signupSeller",(req,res)=>{
 
   console.log(firstname, lastname, shopaddress, gstnumber, mobilephoneno);
   const sellerInfo = new SignupSellerCred({fname:firstname, lname:lastname, saddress:shopaddress, gstno:gstnumber, mobileno:mobilephoneno})
-  SignupSellerCred.insertMany(sellerInfo, function(err) {
-    if(err){
-      console.log(err)
-    } else{
+  await SignupSellerCred.insertMany(sellerInfo).then((value)=>{
       res.redirect("/login")
-    }
+  }, (error)=>{
+    console.log(error);
   })
 })
 
-//sigup seller page
+//sigup customer page
 const signupCustomerSchema = new mongoose.Schema({
   name:{
     type: String,
@@ -182,19 +184,17 @@ app.get("/signupCustomer",(req,res)=>{
   res.render("signupCustomer")
 })
 
-app.post("/signupCustomer",(req,res)=>{
+app.post("/signupCustomer", async(req,res)=>{
   const fullname = req.body.fullname;
   const mobileno = req.body.mobileno;
   const permanentaddress = req.body.address;
 
   const customerInfo = new SignupCustomerCred({name:fullname, mobilenumber:mobileno, address:permanentaddress})
 
-  SignupCustomerCred.insertMany(customerInfo, (err)=>{
-      if(err){
-        console.log(err)
-      } else{
-        res.redirect("/login")
-      }
+  await SignupCustomerCred.insertMany(customerInfo).then((value)=>{
+      res.redirect("/login")
+  }, (error)=>{
+    console.log(error)
   })
 })
 
@@ -221,19 +221,16 @@ app.get("/addProduct",(req,res)=>{
   res.render("addProduct")
 })
 
-app.post("/submitForm",(req,res)=>{
+app.post("/submitForm", async(req,res)=>{
   const name = req.body.pname;
   const desc = req.body.pdesc;
   const cost = req.body.pcost;
 
   const productInfo = new productDetials({pname:name, pdesc:desc, pcost:cost})
-  productDetials.insertMany(productInfo, (err)=>{
-    if(err){
-      console.log(err)
-    } else{
-      res.redirect("/sender")
-    }
-  })
+  await productDetials.insertMany(productInfo).then((value)=>{
+      res.redirect("/sender")}, (error)=>{
+        console.log(error)
+      })
 })
 
 //seller page 
