@@ -101,17 +101,17 @@ app.post("/signup", async(req,res)=>{
             console.log("both the password are different")
             res.redirect("/signup")
           }
-        else{
-          SignupCred.insertMany(value).then((values)=>{
-            if (values.role=="Customer"){
-              res.redirect("/signupCustomer")
-            }
-            else{
-              res.redirect("/signupSeller")
-            }
-          }, (error)=>{
-            console.log(error)})
-          }
+        // else{
+          // SignupCred.insertMany(value).then((values)=>{
+          //   if (values.role=="Customer"){
+          //     res.redirect("/signupCustomer")
+          //   }
+          //   else{
+          //     res.redirect("/signupSeller")
+          //   }
+          // }, (error)=>{
+          //   console.log(error)})
+          // }
       })
 })
 
@@ -249,6 +249,6 @@ app.get("/productCustomer",(req,res)=>{
 })
 
 //tocheck which port is 3000
-app.listen(3000, ()=>{
+app.listen(3030, ()=>{
     console.log("server running on port 3000");
 })

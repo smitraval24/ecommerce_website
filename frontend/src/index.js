@@ -1,25 +1,18 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import React from "react";
+import * as ReactDOMClient from 'react-dom/client';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./views/login";
-import SignUp from "./views/signup";
-import SignUpSeller from "./views/signupSeller";
-import SignUpCustomer from "./views/signupCustomer";
-import AddProduct from "./views/addProduct"
-import PageNotFound from './views/pageNotFound';
-import Home from "./views/home";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const rootElement = document.getElementById('root');
+const root = ReactDOMClient.createRoot(rootElement);
+
 root.render(
-  <BrowserRouter>
-  <Routes>
-    <Route path="/" element={<Home/>}/>
-    <Route path="/login" element={<Login/>}/>
-    <Route path="/signup" element={<SignUp/>}/>
-    <Route path="/signupSeller" element={<SignUpSeller/>}/>
-    <Route path="/signupCustomer" element={<SignUpCustomer/>}/>
-    <Route path='/addProduct' element={<AddProduct/>}/>
-    <Route path="*" element={<PageNotFound/>}/>
-  </Routes>
-  </BrowserRouter>
+  // <div>hello smit raval is here</div>
+  <React.StrictMode>
+  <Router>
+    <Routes>
+      <Route path="/" element={<Login />}></Route>
+    </Routes>
+  </Router>
+  </React.StrictMode>
 );

@@ -12,14 +12,3 @@ function Home(){
 }
   
 export default Home;
-    {/* <script>
-    function opencart(){
-      var carta = document.getElementById("cart-area");
-      if(carta.style.display==="none"){
-          carta.style.display="block";
-      }else{
-          carta.style.display="none";
-      }
-    }
-    </script> */}
-

@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Footer(params) {
+function Footer() {
     return(
         <footer>
             e-commerce website
