@@ -17,10 +17,10 @@ root.render(
   <React.StrictMode>
   <Router>
     <Routes>
-      <Route path="/" element={<Login />}></Route>
+      <Route path="/login" element={<Login />}></Route>
       <Route path="/signup" element={<SignUp />}></Route>
       <Route path="/addProduct" element={<AddProduct />}></Route>
-      <Route path="/home" element={<Home />}></Route>
+      <Route path="/" element={<Home />}></Route>
       <Route path="/pagenotfound" element={<PageNotFound />}></Route>
       <Route path="/signup-customer" element={<SignUpCustomer />}></Route>
       <Route path="/signup-seller" element={<SignUpSeller />}></Route>
