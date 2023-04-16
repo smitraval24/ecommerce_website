@@ -1,11 +1,12 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import "./App.css"
 
 function Login() {
   return(
-    <Form action="/login" method="post">
-      <h1>Login</h1>
+    <Form action="/login" method="post" className='landingForm'>
+      <h1 className='heading'>Login</h1>
       <Form.Group className="mb-3" controlId="LoginEmail">
         <Form.Control type="email" placeholder="Email address" name="email" />
       </Form.Group>
@@ -15,7 +16,7 @@ function Login() {
       <Form.Group className="mb-3" controlId="formBasicCheckbox">
         <Form.Check type="checkbox" label="Check me out" />
       </Form.Group>
-      <Button variant="primary" type="submit">
+      <Button variant="primary" type="submit" className='btn'>
         Login
       </Button>
     </Form>
