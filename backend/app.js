@@ -7,31 +7,17 @@ const _ = require("lodash");
 const Path = require('path');
 var jsdom = require('jsdom');
 $ = require('jquery')(new jsdom.JSDOM().window);
-const mongoose = require('mongoose');
-// console.log(mongoose.connection.readyState);
-// 0: disconnected
-// 1: connected
-// 2: connecting
-// 3: disconnecting
+
 commonPath = "C:/PROGRAMMING/";
 const publicFolderPath = Path.join(commonPath+"/public");
 const viewsFolderPath = Path.join(commonPath+"/src/views");
 
- 
 let app = express();
 app.set('view engine','ejs');
 app.set('views', viewsFolderPath)
 // console.log(viewsFolderPath,publicFolderPath)
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(express.static(publicFolderPath));
-mongoose.set('strictQuery',false);
-mongoose.connect('mongodb://127.0.0.1:27017/ecommerce')
-.then(()=>{
-    console.log("monogdb connected")
-})
-.catch(()=>{
-    console.log("failed to connect")
-})
 
 app.get("/", (req,res)=>{
     res.render("home")
@@ -58,27 +44,6 @@ app.post("/login", async(req,res)=>{
 })
 
 //signup page
-const signupSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  repassword:{
-    type:String,
-    required: true
-  },
-  role:{
-    type:String,
-    required: true
-  }
-}); 
-
-const SignupCred = mongoose.model("SignupCred", signupSchema);  
-
 app.get("/signup", (req,res)=>{
     res.render("signup")
   });
@@ -116,32 +81,6 @@ app.post("/signup", async(req,res)=>{
 })
 
 //signup seller page
-
-const signupSellerCredSchema = new mongoose.Schema({
-  fname:{
-    type:String,
-    required: true
-  },
-  lname:{
-    type:String,
-    required: true
-  },
-  saddress:{
-    type:String,
-    required: true
-  },
-  gstno:{
-    type:String,
-    required: true
-  },
-  mobileno:{
-    type: Number,
-    required: true
-  }
-})
-
-const SignupSellerCred = mongoose.model("signupsellercred", signupSellerCredSchema)
-
 app.get("/signupSeller",(req,res)=>{
   res.render("signupSeller")
 })
@@ -163,23 +102,6 @@ app.post("/signupSeller", async(req,res)=>{
 })
 
 //sigup customer page
-const signupCustomerSchema = new mongoose.Schema({
-  name:{
-    type: String,
-    required: true    
-  },
-  mobilenumber:{
-    type: Number,
-    required: true
-  },
-  address:{
-    type: String,
-    required: true
-  }
-})
-
-const SignupCustomerCred = mongoose.model("signupCustomerCred", signupCustomerSchema)
-
 app.get("/signupCustomer",(req,res)=>{
   res.render("signupCustomer")
 })
@@ -199,27 +121,9 @@ app.post("/signupCustomer", async(req,res)=>{
 })
 
 //add product page
-
-const productDetialsSchema = new mongoose.Schema({
-  pname:{
-    type: String,
-    required: true
-  },
-  pdesc:{
-    type: String,
-    required: true
-  },
-  pcost:{
-    type: String,
-    required: true
-  }
-})
-
-const productDetials = mongoose.model("productDetail", productDetialsSchema);
-
 app.get("/addProduct",(req,res)=>{
   res.render("addProduct")
-})
+});
 
 app.post("/submitForm", async(req,res)=>{
   const name = req.body.pname;
@@ -231,24 +135,24 @@ app.post("/submitForm", async(req,res)=>{
       res.redirect("/sender")}, (error)=>{
         console.log(error)
       })
-})
+});
 
 //seller page 
 app.get("/seller", (req,res)=>{
   res.render("seller")
-})
+});
 
 //customer page 
 app.get("/customer",(req,res)=>{
   res.render("customer")
-})
+});
 
 //product customer page
 app.get("/productCustomer",(req,res)=>{
   res.render("productCustomer")
-})
+});
 
 //tocheck which port is 3000
 app.listen(3030, ()=>{
-    console.log("server running on port 3000");
-})
+    console.log("server running on port 3030");
+});
