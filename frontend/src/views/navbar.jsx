@@ -7,9 +7,9 @@ function NavBar(props){
           <p className='company-logo'>Company</p>
           <nav>
             <ul>
-              <li><a><NavLink to={"/"}>Home</NavLink></a></li>
-              <li><a><NavLink to={"/products"}>Products</NavLink></a></li>
-              <li><a><NavLink to={"/cart"}>Cart<sup> {props.count} </sup></NavLink></a></li>
+              <li><NavLink to={"/"}>Home</NavLink></li>
+              <li><NavLink to={"/products"}>Products</NavLink></li>
+              <li><NavLink to={"/cart"}>Cart<sup> {props.count} </sup></NavLink></li>
             </ul>
             <a href='cart.html' className='cart-logo'>Cart</a>
           </nav>
