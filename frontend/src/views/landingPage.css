@@ -3,7 +3,7 @@
   padding: 0rem;
 }
 
-/* landing page css(signup and login) */
+/* landing page css(basic signup(signup.jsx file) and login) */
 .landingForm{
   position: absolute;
   top: 50%;
@@ -14,6 +14,8 @@
 }
 
 .heading{
+  font-size: 3rem;
+  padding-bottom: 1rem;
   text-align: center;
 }
 
