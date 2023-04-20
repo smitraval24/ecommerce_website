@@ -72,7 +72,7 @@ const App = () => {
       setshowCart(value)
     }
   return (
-    <div>
+    <>
       <Router>
       <Routes>
       <Route path='/' element={
@@ -104,7 +104,7 @@ const App = () => {
       <Route path="*" element={<PageNotFound />}></Route>
     </Routes>
   </Router>
-    </div>
+    </>
   )
 }
 
