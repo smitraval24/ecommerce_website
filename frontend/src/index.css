@@ -5,9 +5,11 @@ Last Updated: 2010-09-17
 Author: Richard Clark - http://richclarkdesign.com
 Twitter: @rich_clark
 */
+html, body {
+  margin: 0;
+  height: 100%;
+}
 
-html,
-body,
 div,
 span,
 object,
@@ -172,8 +174,6 @@ select {
   vertical-align: middle;
 }
 
-
-
 * {
   text-decoration: none;
 }
@@ -259,7 +259,6 @@ header .cart-logo {
 }
 
 /*after nav*/
-
 .home-header-photo {
   width: 100%;
   height: calc(50vh - 100px);
@@ -330,16 +329,15 @@ header .cart-logo {
 }
 
 /* Footer from here */
-
 footer {
   width: 100%;
   padding: 30px 30px;
-  margin-top: 20px;
+  /* margin-top: 5000px; */
   background-color: rgb(1, 1, 1);
   color: rgb(125, 125, 125);
   overflow: hidden;
-  position: absolute;
-  bottom: 0;
+  position: sticky;
+  bottom: 0px;
 }
 
 footer ul {
